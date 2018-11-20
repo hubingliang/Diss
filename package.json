@@ -8,6 +8,15 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "cssnano-preset-advanced": "^4.0.5",
+    "leancloud-realtime": "^4.2.0",
+    "leancloud-storage": "^3.11.0",
+    "postcss-aspect-ratio-mini": "0.0.2",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.1",
+    "postcss-px-to-viewport": "0.0.3",
+    "postcss-url": "^8.0.0",
+    "postcss-write-svg": "^3.0.1",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
