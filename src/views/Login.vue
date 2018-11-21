@@ -3,8 +3,8 @@
         <div class="logo">D</div>
         <h2 class="title">Welcome Back</h2>
         <section class="form">
-            <input type="text">
-            <input type="text">
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
         </section>
     </section>
 </template>
@@ -22,7 +22,8 @@
         margin-bottom: 40px;
     }
     .title {
-        font-size: 0.7rem;
+        font-size: 70px;
+        margin-bottom: 100px;
     }
     .form {
         display: flex;
@@ -31,9 +32,12 @@
             border: none;
             border-bottom: 1px solid #2c3e50;
             outline: none;
-            font-size: 60px;
+            font-size: 40px;
             margin-bottom: 60px;
             padding-top: 20px;
+        }
+        input:-ms-input-placeholder{
+            color: #999;
         }
     }
 }

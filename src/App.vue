@@ -6,20 +6,36 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+const AV = require("leancloud-storage");
 import { Realtime, TextMessage, Event } from "leancloud-realtime";
+const {
+    TypedMessagesPlugin,
+    ImageMessage
+} = require("leancloud-realtime-plugin-typed-messages");
+
 @Component
 export default class App extends Vue {
-    user = "Jerry";
+    user: string = "Brownhu";
 
     @Emit()
     init() {
-        const realtime = new Realtime({
+        AV.init({
+            appId: "2Fhhh5lcxtGwBOtsXvnsw06G-gzGzoHsz",
+            appKey: "tFBBgTyzjbbywyj6PwK6KGDC"
+        });
+
+        // 初始化即时通讯 SDK
+        var realtime = new Realtime({
             appId: "2Fhhh5lcxtGwBOtsXvnsw06G-gzGzoHsz",
             appKey: "tFBBgTyzjbbywyj6PwK6KGDC",
-            plugins: [] // 注册富媒体消息插件 TypedMessagesPlugin
+            plugins: [TypedMessagesPlugin] // 注册富媒体消息插件
         });
+
+        // var imageMessage = new ImageMessage(file);
+
         realtime.createIMClient(this.user).then(user => {
             // 成功登录
+            this.$store.commit("login", user);
             // this.createConversation(user);
             user.on(Event.INVITED, function invitedEventHandler(
                 payload: any,
@@ -49,13 +65,8 @@ export default class App extends Vue {
         });
     }
 
-    @Emit()
-    changeRouter(routerName: string) {
-        this.$router.push(routerName);
-    }
-
     created() {
-        this.init();
+        // this.init();
     }
 }
 </script>

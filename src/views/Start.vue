@@ -7,13 +7,34 @@
     </section>
 </template>
 
+<script lang="ts">
+import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+import { Realtime, TextMessage, Event } from "leancloud-realtime";
+@Component
+export default class App extends Vue {
+    @Emit()
+    init() {
+        setTimeout(() => {
+            localStorage.getItem("dissName")
+                ? this.$router.push("home")
+                : this.$router.push("room");
+        }, 3000);
+    }
+
+    created() {
+        this.init();
+    }
+}
+</script>
+
+
 <style lang="less" scoped>
 @keyframes grow {
     from {
         height: 0px;
     }
     to {
-        height: 1334px;
+        height: 1324px;
     }
 }
 @keyframes loading {
@@ -39,12 +60,12 @@
         animation: grow 1s forwards;
         background: #2c3e50;
     }
-    .logo{
+    .logo {
         color: white;
         position: absolute;
         font-size: 150px;
     }
-    .loading{
+    .loading {
         position: absolute;
         left: 0;
         bottom: 0;
