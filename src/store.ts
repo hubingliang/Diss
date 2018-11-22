@@ -1,23 +1,23 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        userName: "Brownhu",
+        AV: {},
+        realtime: {},
         user: {},
-        room: {}
+        conversation: {},
     },
     mutations: {
-        login(state, payload: any) {
-            // 用户登录
+        init(state, payload: any) {
+            state.AV = payload.AV;
+            state.realtime = payload.realtime;
+        },
+        initUser(state, payload: any) {
             state.user = payload;
         },
-        joinRoom(state, payload: any) {
-            // 加入房间
-            state.room = payload;
-        }
     },
-    actions: {}
+    actions: {},
 });

@@ -2,12 +2,31 @@
     <section class="Login">
         <div class="logo">D</div>
         <h2 class="title">Welcome Back</h2>
-        <section class="form">
-            <input type="text" placeholder="Username">
-            <input type="password" placeholder="Password">
-        </section>
+        <!-- <Registered></Registered> -->
+        <Login></Login>
     </section>
 </template>
+
+<script lang="ts">
+import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
+import { Realtime, TextMessage, Event } from 'leancloud-realtime';
+import Registered from './Registered.vue';
+import Login from './Login.vue';
+const {
+    TypedMessagesPlugin,
+    ImageMessage,
+} = require('leancloud-realtime-plugin-typed-messages');
+
+@Component({
+    components: {
+        Registered,
+        Login,
+    },
+})
+export default class App extends Vue {
+}
+</script>
+
 
 <style lang="less" scoped>
 .Login {
@@ -36,7 +55,7 @@
             margin-bottom: 60px;
             padding-top: 20px;
         }
-        input:-ms-input-placeholder{
+        input:-ms-input-placeholder {
             color: #999;
         }
     }

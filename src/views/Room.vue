@@ -2,69 +2,61 @@
     <section class="room">
         <section class="topBar"></section>
         <section class="chat">
-
+            <Message :messageList="messageList"></Message>
         </section>
         <section class="inputBox">
-            <input type="text" @keyup.enter="sendMessage" v-model="message">
+            <input type="text" @keyup.enter="sendMessage" v-model="message" id="input">
         </section>
     </section>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-import { Realtime, TextMessage, Event } from "leancloud-realtime";
+import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
+import { Realtime, TextMessage, Event } from 'leancloud-realtime';
 const {
     TypedMessagesPlugin,
-    ImageMessage
-} = require("leancloud-realtime-plugin-typed-messages");
-import Message from "./components/Message.vue";
+    ImageMessage,
+} = require('leancloud-realtime-plugin-typed-messages');
+import Message from '../components/Message.vue';
 
 @Component({
     components: {
-        Message
-    }
+        Message,
+    },
 })
-@Component
 export default class Room extends Vue {
-    message: string = "";
-    user: any = {};
-    conversation: any = {};
-    userName: string = "Jerry";
-
+    private message: string = '';
+    private messageList: String[] = [];
+    private conversation: any = {};
     @Emit()
-    init() {
-        const realtime = new Realtime({
-            appId: "2Fhhh5lcxtGwBOtsXvnsw06G-gzGzoHsz",
-            appKey: "tFBBgTyzjbbywyj6PwK6KGDC",
-            plugins: [TypedMessagesPlugin], // 注册富媒体消息插件
-            pushOfflineMessages: true
-        });
-        realtime.createIMClient(this.userName).then(user => {
-            // 成功登录
-            console.log("登陆成功");
-            user.on(Event.MESSAGE, function(message: any, conversation) {
-                alert(message.text);
+    private init() {
+        console.log(this.$store.state.user)
+        this.$store.state.user
+            .createConversation({
+                members: ['Jerry'],
+                name: 'Tom & Jerry',
+            })
+            .then((conversation: any) => {
+                // 发送消息
+                this.conversation = conversation;
             });
-            // user.createConversation({
-            //     // 指定对话的成员除了当前用户 Tom(SDK 会默认把当前用户当做对话成员)之外，还有 Jerry
-            //     members: ["Jerry"],
-            //     // 对话名称
-            //     name: "BrownHu & Jerry"
-            // }).then((conversation: any) => {
-            //     this.conversation = conversation;
-            // });
+        this.$store.state.user.on(Event.MESSAGE, function(
+            message: any,
+            conversation: any,
+        ) {
+            alert('Message received: ' + message.text);
         });
     }
     @Emit()
-    sendMessage() {
+    private sendMessage() {
         this.conversation
             .send(new TextMessage(`${this.message}`))
             .then((message: any) => {
-                this.message = "";
-                console.log("BrownHu & Jerry", "发送成功！");
+                this.message = '';
+                console.log('BrownHu & Jerry', '发送成功！');
             });
     }
-    created() {
+    private created() {
         this.init();
     }
 }
@@ -79,13 +71,15 @@ export default class Room extends Vue {
     flex-direction: column;
     background: #999;
     .topBar {
-        background: #673;
+        background: #333;
         height: 80px;
         width: 750px;
     }
     .chat {
+        padding: 40px 20px;
         flex: 1;
-        background: #333;
+        background: white;
+        overflow: auto;
     }
     .inputBox {
         display: flex;
@@ -99,6 +93,7 @@ export default class Room extends Vue {
             border: none;
             height: 55px;
             border-radius: 10px;
+            font-size: 35px;
         }
     }
 }

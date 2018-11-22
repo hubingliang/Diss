@@ -1,23 +1,23 @@
 <template>
-  <section class="home">
-    <h1 class="title">Diss</h1>
-    <div class="buttonBox">
-      <router-link :to="'/'">
-        <button class="button">Home</button>
-      </router-link>
-      <router-link :to="'/login'">
-        <button class="button">Login</button>
-      </router-link>
-    </div>
-  </section>
+    <section class="home">
+        <h1 class="title">Diss</h1>
+        <div class="buttonBox">
+            <router-link :to="'/'">
+                <button class="button">Home</button>
+            </router-link>
+            <router-link :to="'/login'">
+                <button class="button">Login</button>
+            </router-link>
+        </div>
+    </section>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from "vue-property-decorator";
+import { Component, Vue, Emit } from 'vue-property-decorator';
 @Component
 export default class App extends Vue {
     @Emit()
-    changeRouter(routerName: string) {
+    private changeRouter(routerName: string) {
         this.$router.push(routerName);
     }
 }
@@ -25,7 +25,7 @@ export default class App extends Vue {
 
 <style lang="less" scoped>
 .home {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;

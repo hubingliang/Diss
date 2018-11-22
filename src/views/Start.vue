@@ -1,27 +1,48 @@
 <template>
     <section class="start">
+        <div class="loading"></div>
         <div class="background">
         </div>
         <div class="logo">Diss</div>
-        <div class="loading"></div>
     </section>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-import { Realtime, TextMessage, Event } from "leancloud-realtime";
+import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
+import { Realtime, TextMessage, Event } from 'leancloud-realtime';
+const AV = require('leancloud-storage');
+const {
+    TypedMessagesPlugin,
+    ImageMessage,
+} = require('leancloud-realtime-plugin-typed-messages');
+
 @Component
 export default class App extends Vue {
     @Emit()
-    init() {
+    private init() {
+        AV.init({
+            appId: '2Fhhh5lcxtGwBOtsXvnsw06G-gzGzoHsz',
+            appKey: 'tFBBgTyzjbbywyj6PwK6KGDC',
+        });
+        const realtime = new Realtime({
+            appId: '2Fhhh5lcxtGwBOtsXvnsw06G-gzGzoHsz',
+            appKey: 'tFBBgTyzjbbywyj6PwK6KGDC',
+            plugins: [TypedMessagesPlugin], // 注册富媒体消息插件
+            pushOfflineMessages: true,
+        });
+
+        this.$store.commit('init', {
+            AV,
+            realtime,
+        });
         setTimeout(() => {
-            localStorage.getItem("dissName")
-                ? this.$router.push("home")
-                : this.$router.push("room");
-        }, 3000);
+            localStorage.getItem('dissName')
+                ? this.$router.push('home')
+                : this.$router.push('layout');
+        }, 1500);
     }
 
-    created() {
+    private created() {
         this.init();
     }
 }
@@ -68,11 +89,12 @@ export default class App extends Vue {
     .loading {
         position: absolute;
         left: 0;
-        bottom: 0;
+        top: 0;
         width: 750px;
         height: 10px;
         background: orange;
         animation: loading 500ms infinite;
+        z-index: 2;
     }
 }
 </style>
