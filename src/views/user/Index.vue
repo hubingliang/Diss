@@ -23,7 +23,7 @@ const {
         Login,
     },
 })
-export default class App extends Vue {
+export default class User extends Vue {
 }
 </script>
 

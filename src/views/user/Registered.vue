@@ -1,8 +1,8 @@
 <template>
     <section class="registered">
-        <input type="text" v-model="userName" placeholder="User name">
-        <input type="password" v-model="password" placeholder="Password">
-        <input type="text" v-model="email" placeholder="Email">
+        <input type="text" v-model="userName" placeholder="User name" @keyup.enter="registered">
+        <input type="password" v-model="password" placeholder="Password" @keyup.enter="registered">
+        <input type="text" v-model="email" placeholder="Email" @keyup.enter="registered">
         <button @click="registered">Registered</button>
     </section>
 </template>
@@ -17,9 +17,9 @@ const {
 
 @Component
 export default class Registered extends Vue {
-    userName = '';
-    password = '';
-    email = '';
+    private userName = '';
+    private password = '';
+    private email = '';
 
     @Emit()
     private registered() {
@@ -34,6 +34,8 @@ export default class Registered extends Vue {
         user.setPassword(this.password);
         // 设置邮箱
         user.setEmail(this.email);
+        const avatar = this.upAvatar;
+        user.set('avatar', avatar);
         user.signUp().then(
             (user: any) => {
                 this.$store.state.realtime
@@ -44,6 +46,16 @@ export default class Registered extends Vue {
             },
             function(error: any) {},
         );
+    }
+    @Emit()
+    private upAvatar() {
+        const fileUploadControl: any = document.querySelector('sd');
+        if (fileUploadControl.files.length > 0) {
+            var localFile = fileUploadControl.files[0];
+            var name = 'avatar.jpg';
+
+            return new this.$store.state.AV.File(name, localFile);
+        }
     }
 }
 </script>

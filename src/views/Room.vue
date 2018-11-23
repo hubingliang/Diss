@@ -1,6 +1,6 @@
 <template>
     <section class="room">
-        <section class="topBar"></section>
+        <TopBar></TopBar>
         <section class="chat">
             <Message :messageList="messageList"></Message>
         </section>
@@ -17,11 +17,13 @@ const {
     TypedMessagesPlugin,
     ImageMessage,
 } = require('leancloud-realtime-plugin-typed-messages');
-import Message from '../components/Message.vue';
+import Message from '@/components/Message.vue';
+import TopBar from '@/components/TopBar.vue';
 
 @Component({
     components: {
         Message,
+        TopBar,
     },
 })
 export default class Room extends Vue {
@@ -30,28 +32,34 @@ export default class Room extends Vue {
     private conversation: any = {};
     @Emit()
     private init() {
-        console.log(this.$store.state.user)
+        console.log(this.$store.state.user);
         this.$store.state.user
             .createConversation({
-                members: ['Jerry'],
+                members: [
+                    '5bf66816303f39005ea2a323',
+                    '5bf667df808ca40072063fe7',
+                ],
                 name: 'Tom & Jerry',
             })
             .then((conversation: any) => {
                 // 发送消息
                 this.conversation = conversation;
             });
-        this.$store.state.user.on(Event.MESSAGE, function(
-            message: any,
-            conversation: any,
-        ) {
-            alert('Message received: ' + message.text);
-        });
+        this.$store.state.user.on(
+            Event.MESSAGE,
+            (message: any, conversation: any) => {
+                console.log(message);
+
+                this.$store.commit('initMessageList', message);
+            },
+        );
     }
     @Emit()
     private sendMessage() {
         this.conversation
             .send(new TextMessage(`${this.message}`))
             .then((message: any) => {
+                this.$store.commit('initMessageList', message);
                 this.message = '';
                 console.log('BrownHu & Jerry', '发送成功！');
             });

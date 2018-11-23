@@ -9,6 +9,8 @@ export default new Vuex.Store({
         realtime: {},
         user: {},
         conversation: {},
+        messageList: [],
+        conversationList: [],
     },
     mutations: {
         init(state, payload: any) {
@@ -17,6 +19,15 @@ export default new Vuex.Store({
         },
         initUser(state, payload: any) {
             state.user = payload;
+        },
+        initConversation(state, payload) {
+            state.conversation = payload;
+        },
+        initMessageList(state, payload) {
+            state.messageList.push(payload);
+        },
+        initConversationList(state, payload) {
+            state.conversationList.push(payload);
         },
     },
     actions: {},

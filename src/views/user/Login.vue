@@ -1,7 +1,7 @@
 <template>
     <section class="Login">
-        <input type="text" v-model="userName" placeholder="User name">
-        <input type="text" v-model="password" placeholder="Password">
+        <input type="text" v-model="userName" placeholder="User name" @keyup.enter="logIn">
+        <input type="text" v-model="password" placeholder="Password" @keyup.enter="logIn">
         <button @click="logIn()">LogIn</button>
     </section>
 </template>
@@ -22,6 +22,8 @@ export default class App extends Vue {
                     .createIMClient(user)
                     .then((user: any) => {
                         this.$store.commit('initUser', user);
+                        console.log(user);
+                        
                         this.$router.push('room');
                     });
             },
