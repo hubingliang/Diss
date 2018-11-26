@@ -27,7 +27,7 @@ export default class Registered extends Vue {
             return;
         }
         // 新建 AVUser 对象实例
-        var user = new this.$store.state.AV.User();
+        const user = new this.$store.state.AV.User();
         // 设置用户名
         user.setUsername(this.userName);
         // 设置密码
@@ -44,15 +44,17 @@ export default class Registered extends Vue {
                         this.$store.commit('initUser', user);
                     });
             },
-            function(error: any) {},
+            function(error: any) {
+                console.log(error)
+            },
         );
     }
     @Emit()
     private upAvatar() {
         const fileUploadControl: any = document.querySelector('sd');
         if (fileUploadControl.files.length > 0) {
-            var localFile = fileUploadControl.files[0];
-            var name = 'avatar.jpg';
+            const localFile = fileUploadControl.files[0];
+            const name = 'avatar.jpg';
 
             return new this.$store.state.AV.File(name, localFile);
         }

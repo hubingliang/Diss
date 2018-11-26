@@ -23,11 +23,10 @@ export default class App extends Vue {
                     .then((user: any) => {
                         this.$store.commit('initUser', user);
                         console.log(user);
-                        
                         this.$router.push('room');
                     });
             },
-            function(error: Object) {
+            function(error: object) {
                 console.log(error);
             },
         );

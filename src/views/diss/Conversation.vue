@@ -28,7 +28,7 @@ export default class Conversation extends Vue {
             .containsMembers([`${this.$store.state.user.id}`])
             .find()
             .then((conversations: any) => {
-                for (let [index, conversation] of conversations.entries()) {
+                for (const [index, conversation] of conversations.entries()) {
                     for (const member of conversation.members) {
                         findUser(member).then((user: any) => {
                             if (user.id !== this.$store.state.user.id) {
@@ -45,8 +45,6 @@ export default class Conversation extends Vue {
             })
             .catch(console.error.bind(console));
     }
-    @Emit()
-    private firendName(members: any) {}
     private created() {
         this.init();
     }

@@ -48,7 +48,7 @@ export default new Router({
                 title: 'diss',
             },
             redirect: {
-                name: "conversation"
+                name: 'conversation',
             },
             component: () => import('@/views/diss/Index.vue'),
             children: [

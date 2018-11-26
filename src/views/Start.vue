@@ -51,7 +51,7 @@ export default class App extends Vue {
             // 跳转到首页
         } else {
             this.$router.push('layout');
-            //currentUser 为空时，可打开用户注册界面…
+            // currentUser 为空时，可打开用户注册界面…
         }
     }
     private created() {

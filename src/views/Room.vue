@@ -28,7 +28,7 @@ import TopBar from '@/components/TopBar.vue';
 })
 export default class Room extends Vue {
     private message: string = '';
-    private messageList: String[] = [];
+    private messageList: string[] = [];
     private conversation: any = {};
     @Emit()
     private init() {
