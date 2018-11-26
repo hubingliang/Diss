@@ -2,24 +2,22 @@
     <section class="room">
         <TopBar>
             <template slot="back">
-                <router-link to="/diss">
-                    <section class="back">
-                        <svg class="icon backIcon" aria-hidden="true">
-                            <use xlink:href="#icon-back"></use>
-                        </svg>
-                        <span>Diss</span>
-                    </section>
-                </router-link>
+                <section class="back" @click="routerTo('/diss','Diss')">
+                    <svg class="icon backIcon" aria-hidden="true">
+                        <use xlink:href="#icon-back"></use>
+                    </svg>
+                    <span>Diss</span>
+                </section>
             </template>
-            <template slot="friend">
+            <template slot="topBarName">
                 <section class="friend">{{this.$route.query.friend}}</section>
             </template>
             <template slot="control">
                 <section class="control"></section>
             </template>
         </TopBar>
-        <section class="chat">
-            <Message :messageList="messageList"></Message>
+        <section class="chat" id="chat">
+            <Message></Message>
         </section>
         <section class="inputBox">
             <input type="text" @keyup.enter="sendMessage" v-model="message" id="input">
@@ -45,49 +43,55 @@ import TopBar from '@/components/TopBar.vue';
 })
 export default class Room extends Vue {
     private message: string = '';
-    private messageList: string[] = [];
     private conversation: any = {};
     @Emit()
     private init() {
-        // console.log(this.$store.state.user);
-        this.$store.state.user
-            .getConversation(this.$route.query.conversationID)
-            .then((conversation: any) => {
-                this.conversation = conversation;
+        this.$store.state.conversation
+            .queryMessages({
+                limit: 10, // limit 取值范围 1~1000，默认 20
+            })
+            .then((messages: any[]) => {
+                this.$store.commit('initMessageList', messages);
+                // 最新的十条消息，按时间增序排列
             })
             .catch(console.error.bind(console));
-        // this.$store.state.user
-        //     .createConversation({
-        //         members: [
-        //             '5bf66816303f39005ea2a323',
-        //             '5bf667df808ca40072063fe7',
-        //         ],
-        //         name: 'Tom & Jerry',
-        //     })
-        //     .then((conversation: any) => {
-        //         // 发送消息
-        //         this.conversation = conversation;
-        //     });
+
         this.$store.state.user.on(
             Event.MESSAGE,
             (message: any, conversation: any) => {
-                console.log(message);
-                this.$store.commit('initMessageList', message);
+                this.$store.commit('addMessageList', message);
+                this.resetScroll();
             },
         );
     }
     @Emit()
     private sendMessage() {
-        this.conversation
+        this.$store.state.conversation
             .send(new TextMessage(`${this.message}`))
             .then((message: any) => {
-                this.$store.commit('initMessageList', message);
+                this.$store.commit('addMessageList', message);
+                this.resetScroll();
                 this.message = '';
                 console.log('BrownHu & Jerry', '发送成功！');
             });
     }
+    @Emit()
+    private resetScroll() {
+        const chatDom: any = document.querySelector('#chat');
+        chatDom.scrollTop = chatDom.scrollHeight;
+    }
+    @Emit()
+    routerTo(router, topBarName) {
+        this.$router.push({
+            path: `${router}`,
+            query: { topBarName: `${topBarName}` },
+        });
+    }
     private created() {
         this.init();
+    }
+    private mounted() {
+        this.resetScroll();
     }
 }
 </script>
@@ -100,37 +104,6 @@ export default class Room extends Vue {
     display: flex;
     flex-direction: column;
     background: #999;
-    .back {
-        display: flex;
-        align-items: center;
-        height: 90px;
-        width: 150px;
-        .backIcon {
-            width: 40px;
-            height: 40px;
-            fill: white;
-            margin-left: 10px;
-        }
-        span {
-            font-size: 32px;
-            color: white;
-        }
-    }
-    .friend{
-        flex: 1;
-        height: 90px;
-        font-size: 38px;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .control {
-        display: flex;
-        align-items: center;
-        height: 90px;
-        width: 150px;
-    }
     .chat {
         padding: 40px 20px;
         flex: 1;

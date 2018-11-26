@@ -4,11 +4,11 @@
 
             <div class="message own" v-if="message.from === userId">
                 <p>{{message.text}}</p>
-                <img src="../assets/logo.png" alt="" class="avatar">
+                <img alt="" class="avatar" :src="ownAvatar">
             </div>
 
             <div class="message friend" v-else>
-                <img src="../assets/logo.png" alt="" class="avatar">
+                <img :src="friendAvatar" alt="" class="avatar">
                 <p>{{message.text}}</p>
             </div>
 
@@ -17,12 +17,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 
 @Component
 export default class Message extends Vue {
     get userId() {
         return this.$store.state.user.id;
+    }
+    get ownAvatar() {
+        return this.$store.state.avUser.attributes.avatar.attributes.url;
+    }
+    get friendAvatar(){
+        return this.$store.state.conversation.friend.avatar;
     }
 }
 </script>

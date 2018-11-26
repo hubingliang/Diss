@@ -18,6 +18,7 @@ export default class App extends Vue {
     private logIn() {
         this.$store.state.AV.User.logIn(this.userName, this.password).then(
             (user: any) => {
+                this.$store.commit('initAvUser', user);
                 this.$store.state.realtime
                     .createIMClient(user)
                     .then((user: any) => {

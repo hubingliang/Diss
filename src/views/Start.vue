@@ -15,6 +15,7 @@ const {
     TypedMessagesPlugin,
     ImageMessage,
 } = require('leancloud-realtime-plugin-typed-messages');
+import { findUser } from '@/service/index';
 
 @Component
 export default class App extends Vue {
@@ -41,13 +42,22 @@ export default class App extends Vue {
     private isLogin() {
         const currentUser = AV.User.current();
         if (currentUser) {
+            this.$store.commit('initAvUser', currentUser);
+            console.log(currentUser)
             this.$store.state.realtime
                 .createIMClient(currentUser)
                 .then((currentUser: any) => {
-                    this.$store.commit('initUser', currentUser);
-                    this.$router.push('diss');
+                    findUser(currentUser.id).then((user: any) => {
+                        currentUser.username = user.attributes.username;
+                        this.$store.commit('initUser', currentUser);
+                        this.$router.push({
+                            path: 'diss',
+                            query: { topBarName: 'Diss' },
+                        });
+
+                        // 跳转到首页
+                    });
                 });
-            // 跳转到首页
         } else {
             this.$router.push('user');
             // currentUser 为空时，可打开用户注册界面…

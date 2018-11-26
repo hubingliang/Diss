@@ -4,5 +4,6 @@ export interface StateType {
     conversationList: any[];
     realtime: any;
     user: any;
+    avUser: any;
     conversation: any;
 }

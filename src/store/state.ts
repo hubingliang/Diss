@@ -4,6 +4,7 @@ const state: StateType = {
     AV: {},
     realtime: {},
     user: {},
+    avUser: {},
     conversation: {},
     messageList: [],
     conversationList: [],

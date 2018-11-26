@@ -1,20 +1,20 @@
 <template>
     <section class="diss">
-        <TopBar>Diss</TopBar>
+        <TopBar>
+            <template slot="topBarName">
+                <section class="friend">{{this.$route.query.friend}}</section>
+            </template>
+        </TopBar>
         <router-view></router-view>
         <div class="tabBox">
 
-            <div class="item">
-                <router-link to="conversation">Diss</router-link>
-            </div>
+            <div class="item" @click="routerTo('/diss','Diss')">Diss</div>
 
-            <div class="item">通讯录</div>
+            <div class="item" @click="routerTo('i','通讯录')">通讯录</div>
 
-            <div class="item">没做</div>
+            <div class="item" @click="routerTo('Diss')">没做</div>
 
-            <div class="item">
-                <router-link to="i">我自己</router-link>
-            </div>
+            <div class="item" @click="routerTo('i','我')">我自己</div>
 
         </div>
     </section>
@@ -34,7 +34,15 @@ import TopBar from '@/components/TopBar.vue';
         TopBar,
     },
 })
-export default class Room extends Vue {}
+export default class Diss extends Vue {
+    @Emit()
+    routerTo(router,topBarName) {
+        this.$router.push({
+            path: `${router}`,
+            query: { topBarName: `${topBarName}` },
+        });
+    }
+}
 </script>
 
 <style lang="less" scoped>
@@ -66,6 +74,10 @@ export default class Room extends Vue {}
             color: white;
             flex: 1;
             font-size: 30px;
+            a {
+                text-decoration: none;
+                color: white;
+            }
         }
     }
 }

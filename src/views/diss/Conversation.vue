@@ -1,9 +1,9 @@
 <template>
     <section class="conversation">
         <div class="conversationBox" v-for="(conversation,index) in this.$store.state.conversationList" :key="index" @click="joinRoom(conversation)">
-            <img src="@/assets/logo.png" alt="" class="avatar">
+            <img :src="conversation.friend.avatar" alt="" class="avatar">
             <section class="message">
-                <div class="name">{{conversation.friend}}</div>
+                <div class="name">{{conversation.friend.username}}</div>
                 <div class="lastMessage">{{conversation.lastMessage}}</div>
             </section>
         </div>
@@ -28,7 +28,11 @@ export default class Conversation extends Vue {
                     for (const member of conversation.members) {
                         findUser(member).then((user: any) => {
                             if (user.id !== this.$store.state.user.id) {
-                                conversation.friend = user.attributes.username;
+                                conversation.friend = {
+                                    username: user.attributes.username,
+                                    avatar:
+                                        user.attributes.avatar.attributes.url,
+                                };
                                 this.$store.commit(
                                     'initConversationList',
                                     conversation,
@@ -43,11 +47,12 @@ export default class Conversation extends Vue {
     }
     @Emit()
     private joinRoom(conversation: any) {
+        this.$store.commit('initConversation', conversation);
         this.$router.push({
             path: '/room',
             query: {
                 conversationID: `${conversation.id}`,
-                friend: `${conversation.friend}`
+                topBarName: `${conversation.friend.username}`,
             },
         });
     }
@@ -75,10 +80,15 @@ export default class Conversation extends Vue {
         .message {
             margin-left: 20px;
             display: flex;
+            flex-direction: column;
             height: 100%;
             .name {
-                font-size: 32px;
+                font-size: 40px;
                 font-weight: 400;
+            }
+            .lastMessage {
+                font-size: 30px;
+                color: #999;
             }
         }
     }
