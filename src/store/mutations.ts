@@ -19,6 +19,9 @@ const mutations: MutationTree<StateType> = {
     initConversationList(state, payload: any) {
         state.conversationList.push(payload);
     },
+    cleanConversationList(state) {
+        state.conversationList = [];
+    },
 };
 
 export default mutations;

@@ -22,8 +22,7 @@ export default class App extends Vue {
                     .createIMClient(user)
                     .then((user: any) => {
                         this.$store.commit('initUser', user);
-                        console.log(user);
-                        this.$router.push('room');
+                        this.$router.push('diss');
                     });
             },
             function(error: object) {

@@ -1,6 +1,6 @@
 <template>
     <section class="conversation">
-        <div class="conversationBox" v-for="(conversation,index) in this.$store.state.conversationList" :key="index">
+        <div class="conversationBox" v-for="(conversation,index) in this.$store.state.conversationList" :key="index" @click="joinRoom(conversation)">
             <img src="@/assets/logo.png" alt="" class="avatar">
             <section class="message">
                 <div class="name">{{conversation.friend}}</div>
@@ -11,18 +11,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
-import { Realtime, TextMessage, Event } from 'leancloud-realtime';
-const {
-    TypedMessagesPlugin,
-    ImageMessage,
-} = require('leancloud-realtime-plugin-typed-messages');
+import { Component, Vue, Emit } from 'vue-property-decorator';
 import { findUser } from '@/service/index';
 
 @Component
 export default class Conversation extends Vue {
     @Emit()
     private init() {
+        this.$store.commit('cleanConversationList');
         this.$store.state.user
             .getQuery()
             .containsMembers([`${this.$store.state.user.id}`])
@@ -44,6 +40,16 @@ export default class Conversation extends Vue {
                 console.log(conversations);
             })
             .catch(console.error.bind(console));
+    }
+    @Emit()
+    private joinRoom(conversation: any) {
+        this.$router.push({
+            path: '/room',
+            query: {
+                conversationID: `${conversation.id}`,
+                friend: `${conversation.friend}`
+            },
+        });
     }
     private created() {
         this.init();

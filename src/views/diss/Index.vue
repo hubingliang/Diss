@@ -5,14 +5,16 @@
         <div class="tabBox">
 
             <div class="item">
-                <router-link to="/conversation">Diss</router-link>
+                <router-link to="conversation">Diss</router-link>
             </div>
 
             <div class="item">通讯录</div>
 
             <div class="item">没做</div>
 
-            <div class="item">我自己</div>
+            <div class="item">
+                <router-link to="i">我自己</router-link>
+            </div>
 
         </div>
     </section>

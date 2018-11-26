@@ -46,11 +46,10 @@ export default class App extends Vue {
                 .then((currentUser: any) => {
                     this.$store.commit('initUser', currentUser);
                     this.$router.push('diss');
-                    // this.$router.push('room');
                 });
             // 跳转到首页
         } else {
-            this.$router.push('layout');
+            this.$router.push('user');
             // currentUser 为空时，可打开用户注册界面…
         }
     }

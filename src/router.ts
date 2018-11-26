@@ -7,7 +7,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Start',
+            name: 'start',
             component: () => import('@/views/Start.vue'),
         },
         {
@@ -59,6 +59,14 @@ export default new Router({
                         title: 'conversation',
                     },
                     component: () => import('@/views/diss/Conversation.vue'),
+                },
+                {
+                    path: 'i',
+                    name: 'i',
+                    meta: {
+                        title: 'i',
+                    },
+                    component: () => import('@/views/diss/I.vue'),
                 },
             ],
         },

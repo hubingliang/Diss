@@ -1,6 +1,23 @@
 <template>
     <section class="room">
-        <TopBar></TopBar>
+        <TopBar>
+            <template slot="back">
+                <router-link to="/diss">
+                    <section class="back">
+                        <svg class="icon backIcon" aria-hidden="true">
+                            <use xlink:href="#icon-back"></use>
+                        </svg>
+                        <span>Diss</span>
+                    </section>
+                </router-link>
+            </template>
+            <template slot="friend">
+                <section class="friend">{{this.$route.query.friend}}</section>
+            </template>
+            <template slot="control">
+                <section class="control"></section>
+            </template>
+        </TopBar>
         <section class="chat">
             <Message :messageList="messageList"></Message>
         </section>
@@ -32,24 +49,29 @@ export default class Room extends Vue {
     private conversation: any = {};
     @Emit()
     private init() {
-        console.log(this.$store.state.user);
+        // console.log(this.$store.state.user);
         this.$store.state.user
-            .createConversation({
-                members: [
-                    '5bf66816303f39005ea2a323',
-                    '5bf667df808ca40072063fe7',
-                ],
-                name: 'Tom & Jerry',
-            })
+            .getConversation(this.$route.query.conversationID)
             .then((conversation: any) => {
-                // 发送消息
                 this.conversation = conversation;
-            });
+            })
+            .catch(console.error.bind(console));
+        // this.$store.state.user
+        //     .createConversation({
+        //         members: [
+        //             '5bf66816303f39005ea2a323',
+        //             '5bf667df808ca40072063fe7',
+        //         ],
+        //         name: 'Tom & Jerry',
+        //     })
+        //     .then((conversation: any) => {
+        //         // 发送消息
+        //         this.conversation = conversation;
+        //     });
         this.$store.state.user.on(
             Event.MESSAGE,
             (message: any, conversation: any) => {
                 console.log(message);
-
                 this.$store.commit('initMessageList', message);
             },
         );
@@ -78,10 +100,36 @@ export default class Room extends Vue {
     display: flex;
     flex-direction: column;
     background: #999;
-    .topBar {
-        background: #333;
-        height: 80px;
-        width: 750px;
+    .back {
+        display: flex;
+        align-items: center;
+        height: 90px;
+        width: 150px;
+        .backIcon {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            margin-left: 10px;
+        }
+        span {
+            font-size: 32px;
+            color: white;
+        }
+    }
+    .friend{
+        flex: 1;
+        height: 90px;
+        font-size: 38px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .control {
+        display: flex;
+        align-items: center;
+        height: 90px;
+        width: 150px;
     }
     .chat {
         padding: 40px 20px;

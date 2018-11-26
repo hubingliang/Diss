@@ -1,6 +1,8 @@
 <template>
     <section class="topBar">
-        <slot></slot>
+        <slot name="back"></slot>
+        <slot name="friend"></slot>
+        <slot name="control"></slot>
     </section>
 </template>
 
@@ -12,10 +14,12 @@ export default class TopBar extends Vue {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .topBar {
-    background: #333;
-    height: 80px;
+    background: #2c3e50;
+    height: 90px;
     width: 750px;
+    display: flex;
+    align-items: center;
 }
 </style>
