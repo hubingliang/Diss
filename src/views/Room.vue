@@ -45,10 +45,11 @@ export default class Room extends Vue {
     private message: string = '';
     private conversation: any = {};
     @Emit()
+    // 获取聊天记录
     private init() {
         this.$store.state.conversation
             .queryMessages({
-                limit: 10, // limit 取值范围 1~1000，默认 20
+                limit: 100, // limit 取值范围 1~1000，默认 20
             })
             .then((messages: any[]) => {
                 this.$store.commit('initMessageList', messages);
@@ -65,6 +66,7 @@ export default class Room extends Vue {
         );
     }
     @Emit()
+    // 发送消息
     private sendMessage() {
         this.$store.state.conversation
             .send(new TextMessage(`${this.message}`))
@@ -76,11 +78,13 @@ export default class Room extends Vue {
             });
     }
     @Emit()
+    // 初始化Scroll 有BUG待修复
     private resetScroll() {
         const chatDom: any = document.querySelector('#chat');
         chatDom.scrollTop = chatDom.scrollHeight;
     }
     @Emit()
+    // 路由跳转
     routerTo(router, topBarName) {
         this.$router.push({
             path: `${router}`,

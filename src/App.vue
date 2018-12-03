@@ -10,6 +10,7 @@ import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
 @Component
 export default class App extends Vue {
     @Emit()
+    // 禁止拖动
     private Ban() {
         document.body.addEventListener(
             'touchmove',

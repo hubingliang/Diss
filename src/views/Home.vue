@@ -17,6 +17,7 @@ import { Component, Vue, Emit } from 'vue-property-decorator';
 @Component
 export default class App extends Vue {
     @Emit()
+    // 跳转路由
     private changeRouter(routerName: string) {
         this.$router.push(routerName);
     }

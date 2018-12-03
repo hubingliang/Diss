@@ -41,7 +41,6 @@ export default class Conversation extends Vue {
                         });
                     }
                 }
-                console.log(conversations);
             })
             .catch(console.error.bind(console));
     }
